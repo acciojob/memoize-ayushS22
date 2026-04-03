@@ -1,12 +1,11 @@
 function memoize(callback, resolver) {
   const cache = new Map();
 
-  // function to generate key
   const getKey = (args) => {
-    if (resolver) {
-      return resolver(...args); // custom resolver
+    if (typeof resolver === "function") {
+      return resolver(...args); // correct
     }
-    return JSON.stringify(args); // default behavior
+    return JSON.stringify(args); // correct default
   };
 
   const memoized = function (...args) {
@@ -21,18 +20,15 @@ function memoize(callback, resolver) {
     return result;
   };
 
-  // clear cache
   memoized.clear = function () {
     cache.clear();
   };
 
-  // delete specific cache entry
   memoized.delete = function (...args) {
     const key = getKey(args);
-    cache.delete(key);
+    return cache.delete(key); // return boolean (important)
   };
 
-  // check if cache has entry
   memoized.has = function (...args) {
     const key = getKey(args);
     return cache.has(key);
