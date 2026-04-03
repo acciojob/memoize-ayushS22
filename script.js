@@ -3,9 +3,9 @@ function memoize(callback, resolver) {
 
   const getKey = (args) => {
     if (typeof resolver === "function") {
-      return resolver(...args); // correct
+      return resolver(...args); // 🔥 MUST spread
     }
-    return JSON.stringify(args); // correct default
+    return JSON.stringify(args); // default
   };
 
   const memoized = function (...args) {
@@ -26,7 +26,7 @@ function memoize(callback, resolver) {
 
   memoized.delete = function (...args) {
     const key = getKey(args);
-    return cache.delete(key); // return boolean (important)
+    return cache.delete(key);
   };
 
   memoized.has = function (...args) {
